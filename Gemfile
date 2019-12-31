@@ -33,6 +33,7 @@ gem 'autoprefixer-rails'
 gem 'bcrypt', :require => "bcrypt"
 gem 'mail_form'
 gem 'simple_form'
+gem 'will_paginate', '~> 3.2.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
