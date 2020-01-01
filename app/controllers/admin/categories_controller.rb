@@ -1,4 +1,6 @@
 class Admin::CategoriesController < Admin::ApplicationController
+  before_action :verify_logged_in
+  
   def new
     @page_title = 'Add Category'
     @category = Category.new
@@ -7,7 +9,7 @@ class Admin::CategoriesController < Admin::ApplicationController
   def create
     @category = Category.new(category_params)
     if @category.save
-      flash[:notice] = 'Category Created!'
+      flash[:notice] = 'Category Created'
       redirect_to admin_categories_path
     else
       render 'new'
@@ -22,7 +24,8 @@ class Admin::CategoriesController < Admin::ApplicationController
     @category = Category.find(params[:id])
 
     if @category.update(category_params)
-      flash[:notice] = 'Category Updated!'
+      flash[:notice] = 'Category Updated'
+
       redirect_to admin_categories_path
     else
       render 'new'
@@ -33,15 +36,16 @@ class Admin::CategoriesController < Admin::ApplicationController
     @category = Category.find(params[:id])
     @category.destroy
 
-    flash[:notice] = 'Category Removed!'
-    redirect_to admin_categories_path
+    flash[:notice] = 'Category Removed'
+
+      redirect_to admin_categories_path
   end
 
   def index
     if params[:search]
-      @categories = Category.search(params[:search]).all.order('name').paginate(:per_page => 10, :page => params[:page])
+      @categories = Category.search(params[:search]).all.order('created_at DESC').paginate(:per_page => 10, :page => params[:page])
     else
-      @categories = Category.all.order('name').paginate(:per_page => 10, :page => params[:page])
+      @categories = Category.all.order('created_at DESC').paginate(:per_page => 10, :page => params[:page])
     end
   end
 

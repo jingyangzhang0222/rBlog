@@ -1,4 +1,6 @@
 class Admin::PostsController < Admin::ApplicationController
+  before_action :verify_logged_in
+
   def new
     @page_title = 'Add Post'
     @post = Post.new
@@ -8,11 +10,11 @@ class Admin::PostsController < Admin::ApplicationController
     @post = Post.new(post_params)
 
     if params[:post][:image].blank?
-      @post.image = nil;
+      @post.image = nil
     end
 
     if @post.save
-      flash[:notice] = 'Post Created!'
+      flash[:notice] = 'Post Created'
       redirect_to admin_posts_path
     else
       render 'new'
@@ -27,11 +29,12 @@ class Admin::PostsController < Admin::ApplicationController
     @post = Post.find(params[:id])
 
     if params[:post][:image].blank?
-      @post.image = nil;
+      @post.image = nil
     end
 
     if @post.update(post_params)
-      flash[:notice] = 'Post Updated!'
+      flash[:notice] = 'Post Updated'
+
       redirect_to admin_posts_path
     else
       render 'new'
@@ -42,8 +45,9 @@ class Admin::PostsController < Admin::ApplicationController
     @post = Post.find(params[:id])
     @post.destroy
 
-    flash[:notice] = 'Post Removed!'
-    redirect_to admin_posts_path
+    flash[:notice] = 'Post Removed'
+
+      redirect_to admin_posts_path
   end
 
   def index
